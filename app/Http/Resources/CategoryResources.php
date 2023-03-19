@@ -14,7 +14,7 @@ class CategoryResources extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $category = [
             'id'                =>      $this->id,
             'attributes'        =>      [
                 'name'          =>      $this->name,
@@ -24,10 +24,16 @@ class CategoryResources extends JsonResource
                 'is_active'     =>      $this->is_active,
                 'updated_at'    =>      $this->updated_at,
                 'created_at'    =>      $this->created_at,
-            ],
-            'myChildren'    =>    $this->myChildren,
-            'myParent'    =>      $this->myParent,
-            'plats'       =>        $this->plats  
+            ]
         ];
+
+        if($request->with_details && $request->with_details == "true"){
+            $category['myParent'] = $this->myParent;
+            $category['myChildren'] = $this->myChildren;
+            $category['plats'] = $this->plats;
+        }
+
+        return $category;
+
     }
 }
